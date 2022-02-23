@@ -63,10 +63,15 @@ def write_to_db(to_db_list, table_name, id_tag=None, header=[], on_conflict=Fals
 
     finally:
         conn.close()
+        
 
-
+def make_chunks(lst, chanck_size):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), chanck_size):
+        yield lst[i:i + chanck_size]
+        
+        
 def prepare_data_to_db():
-    row_num = 0
     data_list = []
     with open('test_data_1.csv') as test_data:
         test_gen = (row.split(',') for row in test_data)
@@ -78,8 +83,9 @@ def prepare_data_to_db():
                 print(f'{row} cannot be added to data_list becouse of wrong element type')
                 continue
             data_list.append(upload_data)
-            row_num += 1
-    write_to_db(data_list, 'big_data')
+            
+    for chunck in make_chunks(data_list, 100000):
+        write_to_db(chunck, 'big_data')
 
 
 prepare_data_to_db()
