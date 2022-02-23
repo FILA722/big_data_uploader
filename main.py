@@ -1,3 +1,7 @@
+import settings
+import psycopg2
+
+
 def get_db_credentials():
     for _ in range(10):
         try:
@@ -75,15 +79,7 @@ def prepare_data_to_db():
                 continue
             data_list.append(upload_data)
             row_num += 1
-    # print(data_list)
-    print(row_num)
     write_to_db(data_list, 'big_data')
-
-
-
-
-#to_db_list = [(1,'a1', 0.879705652,0.475079079,0.561655765,0.128928736,0.83258941,0.53247354,0.679554757,0.377437516,0.217004733,0.036316505,0.115875647,0.105137881,0.178496617,0.86295199,0.036553146,0.325671385,0.086488842,0.338275984,0.394593671,0.514706074,0.910468774,0.048036537)]
-#write_to_db(to_db_list, 'big_data')
 
 
 prepare_data_to_db()
